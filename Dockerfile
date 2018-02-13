@@ -10,6 +10,7 @@ RUN apt-get update -qq  && \
     apt-get autoremove -y && \
     apt-get autoclean
 
+RUN npm install nodemon -g
 
 ARG user=acika
 ARG uid=1001
@@ -22,4 +23,4 @@ USER $user
 
 WORKDIR /workspace
 
-CMD ['tmux']
+ENTRYPOINT tmux
