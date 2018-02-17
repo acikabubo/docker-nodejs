@@ -4,22 +4,27 @@ LABEL Aleksandar Krsteski "krsteski_aleksandar@hotmail.com"
 
 ENV LANG=C.UTF-8
 
-RUN apt-get update -qq  && \
+RUN apt-get update -qq && \
     apt-get upgrade -yqq && \
-    apt-get install tmux -yqq && \
+    apt-get install sudo tmux -yqq && \
     apt-get autoremove -y && \
     apt-get autoclean
 
 RUN npm install nodemon -g
 
-ARG user=acika
+ARG USER=acika
 ARG uid=1001
 ARG gid=1001
 
-RUN groupadd -g $gid $user; exit 0  # do not crash on already existing GID
-RUN useradd -ms /bin/bash -u $uid -g $gid $user
+RUN groupadd -g $gid $USER && \
+    useradd -ms /bin/bash -u $uid -g $gid $USER && \
+    echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER
 
-USER $user
+# RUN chown -R $USER:$USER /usr/local/lib/node_modules
+RUN mkdir /workspace && \
+    chown -R $USER:$USER /workspace
+
+USER $USER
 
 WORKDIR /workspace
 
