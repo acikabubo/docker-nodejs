@@ -4,6 +4,7 @@ LABEL Aleksandar Krsteski "krsteski_aleksandar@hotmail.com"
 
 ENV LANG=C.UTF-8
 
+# Update and install required packages
 RUN apt-get update -qq && \
     apt-get upgrade -yqq && \
     apt-get install sudo tmux -yqq && \
@@ -21,11 +22,16 @@ RUN groupadd -g $gid $USER && \
     echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER
 
 # RUN chown -R $USER:$USER /usr/local/lib/node_modules
-RUN mkdir /workspace && \
-    chown -R $USER:$USER /workspace
+RUN mkdir /home/$USER/workspace && \
+    chown -R $USER:$USER /home/$USER/workspace
 
 USER $USER
 
-WORKDIR /workspace
+# Set git aliases
+RUN git config --global alias.s status && \
+    git config --global alias.c checkout && \
+    git config --global alias.b branch
+
+WORKDIR /home/$USER/workspace
 
 ENTRYPOINT tmux
