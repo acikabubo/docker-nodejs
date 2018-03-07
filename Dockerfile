@@ -19,6 +19,7 @@ RUN npm i -g nodemon node-gyp
 ARG USER=acika
 
 RUN usermod -l $USER node
+RUN echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER
 
 USER $USER
 
