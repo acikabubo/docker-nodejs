@@ -30,4 +30,4 @@ RUN git config --global alias.s status && \
 
 WORKDIR /home/$USER/workspace
 
-ENTRYPOINT tmux
+ENTRYPOINT ["tmux", "new", "-s", "nodejs"]
