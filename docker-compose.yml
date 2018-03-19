@@ -10,7 +10,7 @@ services:
       - ~/development/mongodb/data:/data/db
 
   nodejs:
-    image: nodejsmongodb
+    image: acikabubo/nodejs:mongodb
     container_name: nodejs
     ports:
       - 3000:3000
