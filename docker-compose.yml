@@ -12,6 +12,8 @@ services:
   nodejs:
     image: acikabubo/nodejs:mongodb
     container_name: nodejs
+    depends_on:
+      - mongodb
     ports:
       - 3000:3000
     volumes:
