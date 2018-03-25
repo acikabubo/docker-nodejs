@@ -7,20 +7,19 @@ ENV LANG=C.UTF-8
 
 # heroku installtion script do "apt-get update -qq"
 # there is no need to repeat it
-RUN wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
-
-# upgrade and install additional packages
-RUN apt-get upgrade -yqq && \
+RUN wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh && \
+	# upgrade and install additional packages
+    apt-get upgrade -yqq && \
     apt-get install sudo tmux -yqq && \
     apt-get autoremove -y && \
-    apt-get autoclean
-
-RUN npm i -g nodemon node-gyp
+    apt-get autoclean && \
+    # install globally node packages
+    npm i -g nodemon node-gyp
 
 ARG USER=acika
 
-RUN usermod -l $USER node
-RUN echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER
+RUN usermod -l $USER node && \
+    echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER
 
 USER $USER
 
@@ -31,4 +30,6 @@ RUN git config --global alias.s status && \
 
 WORKDIR /home/$USER/workspace
 
-CMD ["node", "webserver/index.js"]
+# Shell form of ENTRYPOINT ignores any CMD 
+# or docker run command line arguments
+ENTRYPOINT node webserver/index.js
